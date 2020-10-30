@@ -31,7 +31,7 @@ defmodule Foresight.HTML do
       {:ok, %HTTPoison.Response{status_code: 404}} ->
         {:error, :not_found}
       {:ok, %HTTPoison.Response{status_code: code}} ->
-          {:error, code}
+        {:error, code}
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, reason}
     end
