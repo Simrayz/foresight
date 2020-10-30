@@ -21,22 +21,31 @@ defmodule Foresight do
   def get_page(url) do
     case HTML.get_url(url) do
       {:ok, resp} ->
-        title =
-          resp.body
-          |> Parser.get_title()
-
-        {:ok, %Page{title: title, url: resp.request.url}}
+        {:ok, build_page(resp)}
       {:error, _code} ->
         {:error, :not_found}
     end
   end
 
   def get_page!(url) do
-    resp = HTML.get_url!(url)
-    title =
-      resp
-      |> Map.fetch!(:body)
-      |> Parser.get_title
-    %Page{title: title, url: resp.request.url}
+    HTML.get_url!(url)
+    |> build_page()
+  end
+
+  defp build_page(%HTTPoison.Response{body: body} = resp) do
+    parsed_doc =
+      body
+      |> Floki.parse_document!
+
+    title = Parser.get_title(parsed_doc)
+    description = Parser.get_description(parsed_doc)
+    image = Parser.get_image(parsed_doc)
+
+    %Page{
+      title: title,
+      description: description,
+      image: image,
+      url: resp.request.url
+    }
   end
 end

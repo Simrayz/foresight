@@ -4,9 +4,14 @@ defmodule Foresight.Parser.Title do
   """
   @title_tags ["meta[property='og:title']", "title"]
 
-  def search_title(doc) do
+  def search_title(doc) when is_binary(doc) do
     doc
     |> Floki.parse_document!
+    |> search_title()
+  end
+
+  def search_title(doc) do
+    doc
     |> find_title(@title_tags)
     |> extract_title()
   end
