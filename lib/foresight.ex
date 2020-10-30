@@ -30,4 +30,13 @@ defmodule Foresight do
         {:error, :not_found}
     end
   end
+
+  def get_page!(url) do
+    resp = HTML.get_url!(url)
+    title =
+      resp
+      |> Map.fetch!(:body)
+      |> Parser.get_title
+    %Page{title: title, url: resp.request.url}
+  end
 end
