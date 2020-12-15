@@ -4,7 +4,7 @@ defmodule Foresight.MixProject do
   def project do
     [
       app: :foresight,
-      version: "0.1.1",
+      version: "0.2.0",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       compilers: [:phoenix, :gettext] ++ Mix.compilers(),
