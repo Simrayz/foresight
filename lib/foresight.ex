@@ -58,10 +58,17 @@ defmodule Foresight do
     |> build_page()
   end
 
+  def get_meta_tags!(url) do
+    html = HTML.get_url!(url)
+    Parser.get_meta_tags(html.body)
+  end
+
   defp build_page(%HTTPoison.Response{body: body} = resp) do
     parsed_doc =
       body
       |> Floki.parse_document!
+      #|> Floki.find("meta")
+      #meta_tags = parsed_doc |> Floki.find("meta")
 
     title = Parser.get_title(parsed_doc)
     description = Parser.get_description(parsed_doc)
