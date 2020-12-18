@@ -18,8 +18,8 @@ defmodule Foresight.Parser.Description do
   defp find_description(doc, [tag | tail]) do
     case Floki.find(doc, tag) do
       [] -> find_description(doc, tail)
-      [ description ] ->
-        description
+      [ desc | _] ->
+        desc
         |> Floki.attribute("content")
         |> List.first()
     end

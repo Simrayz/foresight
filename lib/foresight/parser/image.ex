@@ -18,7 +18,7 @@ defmodule Foresight.Parser.Image do
   defp find_image(doc, [tag | tail]) do
     case Floki.find(doc, tag) do
       [] -> find_image(doc, tail)
-      [ image ] ->
+      [ image | _] ->
         image
         |> Floki.attribute("content")
         |> List.first()

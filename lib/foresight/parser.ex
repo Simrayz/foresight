@@ -3,6 +3,25 @@ defmodule Foresight.Parser do
   A parser to get meta information
   """
   alias Foresight.Parser.{Title, Description, Image}
+  alias Foresight.Page
+
+  def build_page(%HTTPoison.Response{body: body} = resp) do
+    head_doc =
+      body
+      |> Floki.parse_document!
+      |> Floki.find("head")
+
+    title = get_title(head_doc)
+    description = get_description(head_doc)
+    image = get_image(head_doc)
+
+    %Page{
+      title: title,
+      description: description,
+      image: image,
+      url: resp.request.url
+    }
+  end
 
   @doc "A context function to abstract the underlying parser implementation of titles"
   def get_title(doc) do
