@@ -2,11 +2,11 @@ defmodule Foresight.Parser.Description do
   @moduledoc """
   A parser to get the description of a given html document
   """
-  @desc_tags ["meta[property='og:description']", "meta[name='description']"]
+  @desc_tags ["meta[name='description']", "meta[property='og:description']"]
 
   def search_description(doc) when is_binary(doc) do
     doc
-    |> Floki.parse_document!
+    |> Floki.parse_document!()
     |> search_description()
   end
 
@@ -17,8 +17,10 @@ defmodule Foresight.Parser.Description do
 
   defp find_description(doc, [tag | tail]) do
     case Floki.find(doc, tag) do
-      [] -> find_description(doc, tail)
-      [ desc | _] ->
+      [] ->
+        find_description(doc, tail)
+
+      [desc | _] ->
         desc
         |> Floki.attribute("content")
         |> List.first()
