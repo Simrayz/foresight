@@ -6,19 +6,6 @@ defmodule Foresight do
   alias Foresight.{HTML, Parser}
 
   @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Foresight.hello()
-      :world
-
-  """
-  def hello do
-    :world
-  end
-
-  @doc """
   Get a page struct if the URL is a real website.
 
   ## Examples

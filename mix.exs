@@ -10,9 +10,11 @@ defmodule Foresight.MixProject do
       start_permanent: Mix.env() == :prod,
       deps: deps(),
       aliases: aliases(),
+      package: package(),
       # Doc fields
       name: "Foresight",
-      source_urL: "https://github.com/Simrayz/foresight",
+      description: "Web crawler to preview URLs",
+      source_url: "https://github.com/Simrayz/foresight",
       docs: [
         main: "Foresight"
       ]
@@ -44,7 +46,16 @@ defmodule Foresight.MixProject do
 
   defp aliases do
     [
-      setup: ["deps.get"]
+      setup: ["deps.get"],
+      c: "compile"
+    ]
+  end
+
+  defp package do
+    [
+      maintainers: ["Simrayz"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => "https://github.com/Simrayz/foresight"}
     ]
   end
 end
