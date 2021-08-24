@@ -4,7 +4,7 @@ defmodule Foresight.MixProject do
   def project do
     [
       app: :foresight,
-      version: "0.2.2",
+      version: "0.2.3",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
@@ -36,7 +36,7 @@ defmodule Foresight.MixProject do
   defp deps do
     [
       {:httpoison, "~> 1.6"},
-      {:floki, "~> 0.29.0"},
+      {:floki, "~> 0.31.0"},
       {:html5ever, "~> 0.8.0"},
       {:ex_doc, "~> 0.23", only: :dev, runtime: false}
       # {:dep_from_hexpm, "~> 0.3.0"},
