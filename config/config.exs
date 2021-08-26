@@ -13,7 +13,7 @@ config :logger, :console,
   metadata: [:request_id]
 
 # Use Html5ever for HTML parsing in Floki
-config :floki, :html_parser, Floki.HTMLParser.Html5ever
+# config :floki, :html_parser, Floki.HTMLParser.FastHtml
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
