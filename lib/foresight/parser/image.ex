@@ -6,7 +6,7 @@ defmodule Foresight.Parser.Image do
 
   def search_image(doc) when is_binary(doc) do
     doc
-    |> Floki.parse_document!
+    |> Floki.parse_document!()
     |> search_image()
   end
 
@@ -17,8 +17,10 @@ defmodule Foresight.Parser.Image do
 
   defp find_image(doc, [tag | tail]) do
     case Floki.find(doc, tag) do
-      [] -> find_image(doc, tail)
-      [ image | _] ->
+      [] ->
+        find_image(doc, tail)
+
+      [image | _] ->
         image
         |> Floki.attribute("content")
         |> List.first()

@@ -19,7 +19,7 @@ defmodule Foresight do
       }
     }
   """
-  def get_page(url, fields \\ [:title, :description, :image]) do
+  def get_page(url, fields \\ [:title, :description, :image, :icon]) do
     case HTML.get_url(url) do
       {:ok, resp} ->
         {:ok, Parser.build_page(resp, fields)}
