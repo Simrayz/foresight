@@ -9,7 +9,7 @@ defmodule Foresight do
   Get a page struct if the URL is a real website.
 
   ## Examples
-    iex> Foresign.get_page("https://google.com")
+    iex> Foresight.get_page("https://google.com")
     {:ok,
       %Foresight.Page{
         description: "Hurra for Halloween 2020! #GoogleDoodle",
@@ -19,10 +19,11 @@ defmodule Foresight do
       }
     }
   """
-  def get_page(url) do
+  def get_page(url, fields \\ [:title, :description, :image]) do
     case HTML.get_url(url) do
       {:ok, resp} ->
-        {:ok, Parser.build_page(resp)}
+        {:ok, Parser.build_page(resp, fields)}
+
       {:error, _code} ->
         {:error, :not_found}
     end
@@ -32,7 +33,7 @@ defmodule Foresight do
   Get a page struct if the URL is a real website, otherwise return error.
 
   ## Examples
-    iex> Foresign.get_page("https://google.com")
+    iex> Foresight.get_page("https://google.com")
     %Foresight.Page{
       description: "Hurra for Halloween 2020! #GoogleDoodle",
       image: "https://www.google.com/logos/doodles/2020/halloween-2020-6753651837108597.5-2xa.gif",

@@ -5,43 +5,49 @@ defmodule Foresight.Parser do
   alias Foresight.Parser.{Title, Description, Image}
   alias Foresight.Page
 
-  def build_page(%HTTPoison.Response{body: body} = resp) do
+  def build_page(%HTTPoison.Response{body: body} = resp, fields \\ []) do
     head_doc =
       body
-      |> Floki.parse_document!
+      |> Floki.parse_document!()
       |> Floki.find("head")
 
-    title = get_title(head_doc)
-    description = get_description(head_doc)
-    image = get_image(head_doc)
-
-    %Page{
-      title: title,
-      description: description,
-      image: image,
-      url: resp.request.url
-    }
+    %Page{url: resp.request.url}
+    |> parse_document(fields, head_doc)
   end
 
-  @doc "A context function to abstract the underlying parser implementation of titles"
-  def get_title(doc) do
-    Title.search_title(doc)
+  @doc """
+  Parse the given fields from a document, and put the results on the %Page{}
+  """
+  def parse_document(%Page{} = page, [field | fields], document) do
+    page
+    |> parse_field(field, document)
+    |> parse_document(fields, document)
   end
 
-  @doc "A context function to abstract the underlying parser implementation of descriptions"
-  def get_description(doc) do
-    Description.search_description(doc)
+  def parse_document(%Page{} = page, [], _document) do
+    page
   end
 
-  @doc "A context function to abstract the underlying parser implementation of image url fetching"
-  def get_image(doc) do
-    Image.search_image(doc)
+  defp parse_field(%Page{} = page, :title, document) do
+    Map.put(page, :title, Title.search_title(document))
+  end
+
+  defp parse_field(%Page{} = page, :description, document) do
+    Map.put(page, :description, Description.search_description(document))
+  end
+
+  defp parse_field(%Page{} = page, :image, document) do
+    Map.put(page, :image, Image.search_image(document))
+  end
+
+  defp parse_field(%Page{} = page, _field, _document) do
+    page
   end
 
   @doc "A context function to get all <meta> tags from the raw html body"
   def get_meta_tags(doc) do
     doc
-    |> Floki.parse_document!
+    |> Floki.parse_document!()
     |> Floki.find("meta")
   end
 end
