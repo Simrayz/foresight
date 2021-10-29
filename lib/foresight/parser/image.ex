@@ -22,7 +22,7 @@ defmodule Foresight.Parser.Image do
 
       [image | _] ->
         image
-        |> Floki.attribute("href")
+        |> Floki.attribute("content")
         |> List.first()
     end
   end
