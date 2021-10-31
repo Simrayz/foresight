@@ -19,7 +19,7 @@ defmodule Foresight do
       }
     }
   """
-  def get_page(url, fields \\ [:title, :description, :image, :icon]) do
+  def get_page(url, fields \\ default_fields()) do
     case HTML.get_url(url) do
       {:ok, resp} ->
         {:ok, Parser.build_page(resp, fields)}
@@ -49,5 +49,9 @@ defmodule Foresight do
   def get_meta_tags!(url) do
     html = HTML.get_url!(url)
     Parser.get_meta_tags(html.body)
+  end
+
+  defp default_fields do
+    Application.get_env(:foresight, :parse_fields, [:title, :description, :image, :icon])
   end
 end
