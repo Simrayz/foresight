@@ -2,7 +2,11 @@ defmodule Foresight.Parser.Description do
   @moduledoc """
   A parser to get the description of a given html document
   """
-  @desc_tags ["meta[name='description']", "meta[property='og:description']"]
+  @desc_tags [
+    "meta[property='og:description']",
+    "meta[name='description']",
+    "meta[property='twitter:description']"
+  ]
 
   def search_description(doc) when is_binary(doc) do
     doc
