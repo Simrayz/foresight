@@ -13,6 +13,7 @@ defmodule Foresight.Parser.Image do
   def search_image(doc) do
     doc
     |> find_image(@desc_tags)
+    |> sanitize_image()
   end
 
   defp find_image(doc, [tag | tail]) do
@@ -29,5 +30,14 @@ defmodule Foresight.Parser.Image do
 
   defp find_image(_doc, []) do
     nil
+  end
+
+  defp sanitize_image(nil) do
+    nil
+  end
+
+  defp sanitize_image(url) do
+    %URI{scheme: scheme, host: host, path: path} = URI.parse(url)
+    scheme <> "://" <> host <> path
   end
 end
