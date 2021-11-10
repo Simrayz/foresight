@@ -39,13 +39,11 @@ defmodule Foresight.Parser.Favicon do
   end
 
   defp get_relative_or_absolute_path(path, %Page{url: url}) do
-    case URI.parse(path) do
-      %URI{host: nil} ->
-        %URI{host: host, scheme: scheme} = URI.parse(url)
-        "#{scheme}://#{host}#{path}"
-
-      _else ->
-        path
+    if String.starts_with?(path, "/") do
+      %URI{host: host, scheme: scheme} = URI.parse(url)
+      "#{scheme}://#{host}#{path}"
+    else
+      path
     end
   end
 end
