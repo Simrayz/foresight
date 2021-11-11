@@ -41,17 +41,25 @@ defmodule Foresight do
       url: "https://google.com"
     }
   """
-  def get_page!(url) do
+  def get_page!(url, fields \\ default_fields()) do
     HTML.get_url!(url)
-    |> Parser.build_page()
+    |> Parser.build_page(fields)
   end
 
   def get_meta_tags!(url) do
-    html = HTML.get_url!(url)
-    Parser.get_meta_tags(html.body)
+    HTML.get_url!(url)
+    |> Map.get(:body)
+    |> Parser.get_meta_tags()
   end
 
   defp default_fields do
-    Application.get_env(:foresight, :parse_fields, [:title, :description, :image, :icon])
+    Application.get_env(:foresight, :parse_fields, [
+      :title,
+      :description,
+      :image,
+      :icon,
+      :type,
+      :site_name
+    ])
   end
 end

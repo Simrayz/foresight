@@ -2,7 +2,7 @@ defmodule Foresight.Parser do
   @moduledoc """
   A parser to get meta information
   """
-  alias Foresight.Parser.{Title, Description, Image, Favicon}
+  alias Foresight.Parser.{Default, Title, Image, Favicon}
   alias Foresight.Page
 
   def build_page(%HTTPoison.Response{body: body} = resp, fields \\ []) do
@@ -33,11 +33,19 @@ defmodule Foresight.Parser do
   end
 
   defp parse_field(%Page{} = page, :description, document) do
-    Map.put(page, :description, Description.search_description(document))
+    Map.put(page, :description, Default.search_field(document, :description))
+  end
+
+  defp parse_field(%Page{} = page, :type, document) do
+    Map.put(page, :type, Default.search_field(document, :type))
+  end
+
+  defp parse_field(%Page{} = page, :site_name, document) do
+    Map.put(page, :site_name, Default.search_field(document, :site_name))
   end
 
   defp parse_field(%Page{} = page, :image, document) do
-    Map.put(page, :image, Image.search_image(document))
+    Map.put(page, :image, Image.search_image(document, page))
   end
 
   defp parse_field(%Page{} = page, :icon, document) do

@@ -2,6 +2,7 @@ defmodule Foresight.Parser.Favicon do
   @moduledoc """
   A parser to get favicons from the given html document
   """
+  import Foresight.Parser.Helpers
   alias Foresight.Page
 
   @favicon_tags ["link[rel='icon']", "link[rel='apple-touch-icon']", "link[rel='shortcut icon']"]
@@ -14,36 +15,7 @@ defmodule Foresight.Parser.Favicon do
 
   def search_favicon(doc, %Page{url: _url} = page) do
     doc
-    |> find_favicon(@favicon_tags)
-    |> get_relative_or_absolute_path(page)
-  end
-
-  defp find_favicon(doc, [tag | tail]) do
-    case Floki.find(doc, tag) do
-      [] ->
-        find_favicon(doc, tail)
-
-      [image | _] ->
-        image
-        |> Floki.attribute("href")
-        |> List.first()
-    end
-  end
-
-  defp find_favicon(_doc, []) do
-    nil
-  end
-
-  defp get_relative_or_absolute_path(nil, %Page{}) do
-    nil
-  end
-
-  defp get_relative_or_absolute_path(path, %Page{url: url}) do
-    if String.starts_with?(path, "/") do
-      %URI{host: host, scheme: scheme} = URI.parse(url)
-      "#{scheme}://#{host}#{path}"
-    else
-      path
-    end
+    |> find_tag(@favicon_tags, "href")
+    |> parse_image_path(page)
   end
 end

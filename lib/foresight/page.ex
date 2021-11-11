@@ -4,5 +4,5 @@ defmodule Foresight.Page do
 
   The `%Page{}` struct is used to structure the meta data from the parsing process.
   """
-  defstruct [:url, :title, :description, :image, :icon]
+  defstruct [:url, :title, :description, :image, :icon, :type, :site_name]
 end
