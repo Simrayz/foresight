@@ -5,7 +5,7 @@
 # is restricted to this project.
 
 # General application configuration
-use Mix.Config
+import Config
 
 # Configures Elixir's Logger
 config :logger, :console,
@@ -15,7 +15,7 @@ config :logger, :console,
 # Use Html5ever for HTML parsing in Floki
 config :floki,
        :html_parser,
-       Application.get_env(:foresight, :html_parser, Floki.HTMLParser.Mochiweb)
+       Application.get_env(:foresight, :html_parser, Floki.HTMLParser.Html5ever)
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.

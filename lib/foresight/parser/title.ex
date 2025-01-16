@@ -2,11 +2,16 @@ defmodule Foresight.Parser.Title do
   @moduledoc """
   A parser to get the title of a given html document
   """
-  @title_tags ["meta[property='og:title']", "meta[name='twitter:title']", "meta[property='og:site_name']", "title"]
+  @title_tags [
+    "meta[property='og:title']",
+    "meta[name='twitter:title']",
+    "meta[property='og:site_name']",
+    "title"
+  ]
 
   def search_title(doc) when is_binary(doc) do
     doc
-    |> Floki.parse_document!
+    |> Floki.parse_document!()
     |> search_title()
   end
 
@@ -17,8 +22,10 @@ defmodule Foresight.Parser.Title do
 
   defp find_title(doc, ["title" | tail]) do
     case Floki.find(doc, "title") do
-      [] -> find_title(doc, tail)
-      [ title | _ ] ->
+      [] ->
+        find_title(doc, tail)
+
+      [title | _] ->
         title
         |> Floki.text()
     end
@@ -26,8 +33,10 @@ defmodule Foresight.Parser.Title do
 
   defp find_title(doc, [tag | tail]) do
     case Floki.find(doc, tag) do
-      [] -> find_title(doc, tail)
-      [ title | _ ] ->
+      [] ->
+        find_title(doc, tail)
+
+      [title | _] ->
         title
         |> Floki.attribute("content")
         |> List.first()
